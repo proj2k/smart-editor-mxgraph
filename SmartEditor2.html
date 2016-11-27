@@ -63,6 +63,7 @@ nhn.husky.EZCreator.createInIFrame({
 	fOnAppLoad : function(){
 		//예제 코드
 		//oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+		setSvgToCanvas();
 	},
 	fCreator: "createSEditor2"
 });
@@ -101,12 +102,17 @@ function setDefaultFont() {
 	 * svg > canvas > img
 	 */
 	function setSvgToCanvas() {
+		// 초기화
+		var bizflowImg = oEditors.getById["ir1"].getWYSIWYGDocument().getElementById('bizflowImg');
+      	if(bizflowImg) {
+        	bizflowImg.remove();
+      	}
 		var svg = document.getElementById('svg').value;
 		var canvgCanvas = document.getElementById('canvg-canvas');
 		canvg(canvgCanvas, svg, {useCORS:true, ignoreMouse:true, 
 			renderCallback : function(){
 		    	var imgData = canvgCanvas.toDataURL("image/png");
-		        oEditors.getById["ir1"].exec("PASTE_HTML", ['<img src="'+imgData+'" />']);
+		        oEditors.getById["ir1"].exec("PASTE_HTML", ['<img id="bizflowImg" src="'+imgData+'" />']);
 		    }
 		});	
 	}

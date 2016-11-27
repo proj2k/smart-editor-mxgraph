@@ -106,11 +106,14 @@
 			var graphNode = editor.graph.container;
 			var sourceInput = document.getElementById('source');
 			sourceInput.checked = false;
-			var doc = mxUtils.parseXml(opener.parent.document.getElementById('mxGraphXml').value);
-			/*var doc = mxUtils.parseXml('<mxGraphModel><root><Diagram label="My Diagram" href="http://www.jgraph.com/" id="0"><mxCell/></Diagram><Layer label="Default Layer" id="1"><mxCell parent="0"/></Layer><Container label="Container" href="" id="2"><mxCell style="swimlane" parent="1" vertex="1" connectable="0"><mxGeometry x="40" y="40" width="200" height="200" as="geometry"/></mxCell></Container><Rect label="Rectangle" href="" id="4"><mxCell parent="2" vertex="1"><mxGeometry x="80" y="60" width="80" height="40" as="geometry"/></mxCell></Rect><Container label="Container" href="" id="3"><mxCell style="swimlane" parent="1" vertex="1" connectable="0"><mxGeometry x="260" y="40" width="200" height="200" as="geometry"/></mxCell></Container><Rect label="Rectangle" href="" id="5"><mxCell parent="3" vertex="1"><mxGeometry x="70" y="50" width="80" height="40" as="geometry"/></mxCell></Rect><Connector label="" href="" id="6"><mxCell parent="1" source="4" target="5" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell></Connector></root></mxGraphModel>');*/
-			var dec = new mxCodec(doc);
-			dec.decode(doc.documentElement, editor.graph.getModel());
 
+			/* 스마트에디터에서 전달된 다이어그램 xml 적용 */
+			console.log(window.name);
+			if(window.name == 'bizflowMod' && opener.parent.document.getElementById('mxGraphXml').value != null) {
+				var doc = mxUtils.parseXml(opener.parent.document.getElementById('mxGraphXml').value);
+				var dec = new mxCodec(doc);
+				dec.decode(doc.documentElement, editor.graph.getModel());
+			}
 
 
 			var funct = function(editor)
@@ -314,6 +317,10 @@
 			{
 				var enc = new mxCodec();
 				var node = enc.encode(editor.graph.getModel());
+				sender.graph.fit();
+ 				sender.graph.view.rendering = true;
+ 				sender.graph.refresh();
+
 				opener.parent.document.getElementById('mxGraphXml').value = mxUtils.getPrettyXml(node);
 				opener.parent.document.getElementById('svg').value=sender.graph.container.innerHTML.replace(/[\w\W]*<svg/,"<svg");
 				opener.parent.setSvgToCanvas();
@@ -343,13 +350,13 @@
 					<!-- Toolbar Here -->				
 				</td>
 				<td valign="top" style="border-width:1px;border-style:solid;border-color:black;">
-					<div id="graph" style="position:relative;height:480px;width:684px;overflow:hidden;cursor:default;">
+					<div id="graph" style="position:relative;height:560px;width:684px;overflow:hidden;cursor:default;">
 						<!-- Graph Here -->
 						<center id="splash" style="padding-top:230px;">
 							<img src="images/loading.gif">
 						</center>
 					</div>
-					<textarea id="xml" style="height:480px;width:684px;display:none;border-style:none;"></textarea>
+					<textarea id="xml" style="height:560px;width:684px;display:none;border-style:none;"></textarea>
 				</td>
 			</tr>
 		</table>
