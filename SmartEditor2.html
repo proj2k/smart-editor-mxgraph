@@ -80,6 +80,56 @@ function fAddEventForBizflow(oEditors) {
 
 }
 
+function fSaveDiagram(mxGroupXml, imageXml)
+{
+    console.log(mxGroupXml);
+    console.log(imageXml);
+
+    var httpRequest;
+    var url = "http://localhost:8080/saveDiagram";
+  
+      if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+        httpRequest = new XMLHttpRequest();
+      } else if (window.ActiveXObject) { // IE
+        try {
+          httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+        } 
+        catch (e) {
+          try {
+            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+          } 
+          catch (e) {}
+        }
+      }
+  
+      if (!httpRequest) {
+        alert('Giving up :( Cannot create an XMLHTTP instance');
+        return false;
+      }
+      httpRequest.onreadystatechange = function () {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status === 200) {
+              alert(httpRequest.responseText);
+            } else {
+              alert('There was a problem with the request.');
+            }
+          }        
+      };
+      httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      httpRequest.open('POST', url);
+      httpRequest.send("imageXml="+imageXml);
+  
+    // var enc = new mxCodec();
+    // var node = enc.encode(editor.graph.getModel());
+    // //sender.graph.fit();
+    // sender.graph.view.rendering = true;
+    // sender.graph.refresh();
+
+    // opener.parent.document.getElementById('mxGraphXml').value = mxUtils.getPrettyXml(node);
+    // opener.parent.document.getElementById('svg').value=sender.graph.container.innerHTML.replace(/[\w\W]*<svg/,"<svg");
+    // opener.parent.setSvgToCanvas();
+};
+
 function fApplyDiagram(mxGroupXml, svg) {
 
 }
