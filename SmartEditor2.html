@@ -82,42 +82,42 @@ function fAddEventForBizflow(oEditors) {
 
 function fSaveDiagram(mxGroupXml, imageXml)
 {
-    console.log(mxGroupXml);
-    console.log(imageXml);
+    //console.log(mxGroupXml);
+    //console.log(imageXml);
 
     var httpRequest;
     var url = "http://localhost:8080/saveDiagram";
   
-      if (window.XMLHttpRequest) { // Mozilla, Safari, ...
-        httpRequest = new XMLHttpRequest();
-      } else if (window.ActiveXObject) { // IE
+    if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+      httpRequest = new XMLHttpRequest();
+    } else if (window.ActiveXObject) { // IE
+      try {
+        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+      } 
+      catch (e) {
         try {
-          httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
         } 
-        catch (e) {
-          try {
-            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-          } 
-          catch (e) {}
-        }
+        catch (e) {}
       }
+    }
   
-      if (!httpRequest) {
-        alert('Giving up :( Cannot create an XMLHTTP instance');
-        return false;
-      }
-      httpRequest.onreadystatechange = function () {
-          if (httpRequest.readyState === 4) {
-            if (httpRequest.status === 200) {
-              alert(httpRequest.responseText);
-            } else {
-              alert('There was a problem with the request.');
-            }
-          }        
-      };
-      httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      httpRequest.open('POST', url);
-      httpRequest.send("imageXml="+imageXml);
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      // return false;
+    }
+    httpRequest.onreadystatechange = function () {
+        if (httpRequest.readyState === 4) {
+          if (httpRequest.status === 200) {
+            alert(httpRequest.responseText);
+          } else {
+            alert('There was a problem with the request.');
+          }
+        }        
+    };
+    httpRequest.open('POST', url);
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    httpRequest.send("imageXml="+imageXml);
   
     // var enc = new mxCodec();
     // var node = enc.encode(editor.graph.getModel());
